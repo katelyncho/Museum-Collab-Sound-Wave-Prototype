@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Museum Collab Sound Wave Prototype</title>
+  </head>
+  <body>
+    <h2>
+      Shared page <small>(<span id="users">1</span> online)</small>
+    </h2>
+    <textarea
+      id="box"
+      rows="10"
+      cols="60"
+      placeholder="Type here..."
+    ></textarea>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const box = document.getElementById("box");
+
+      box.addEventListener("input", () => socket.emit("text", box.value));
+      socket.on("text", (t) => (box.value = t));
+      socket.on(
+        "users",
+        (n) => (document.getElementById("users").textContent = n),
+      );
+    </script>
+  </body>
+</html>
